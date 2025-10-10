@@ -1,40 +1,26 @@
-// index.js
 import express from "express";
-import cors from "cors";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
+import cors from "cors";
+import connectDB from "./config/db.js";
+import userRoutes from "./routes/userRoutes.js";
+import eventRoutes from "./routes/eventRoutes.js";
+import hoursRoutes from "./routes/hoursRoutes.js";
 
 dotenv.config();
+connectDB();
 
 const app = express();
-
-// --- Middleware ---
 app.use(cors());
 app.use(express.json());
 
-// --- MongoDB Connection ---
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log("✅ MongoDB Connected");
-  } catch (error) {
-    console.error("❌ MongoDB connection error:", error.message);
-    process.exit(1);
-  }
-};
-connectDB();
+// Routes
+app.use("/api/users", userRoutes);
+app.use("/api/events", eventRoutes);
+app.use("/api/hours", hoursRoutes);
 
-// --- Basic Routes ---
 app.get("/", (req, res) => {
-  res.send("Backend API is running ✅");
+  res.send("✅ Backend is running!");
 });
 
-app.get("/api/test", (req, res) => {
-  res.json({ message: "Backend API working ✅" });
-});
-
-// --- Server Listen ---
 const PORT = process.env.PORT || 5050;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
