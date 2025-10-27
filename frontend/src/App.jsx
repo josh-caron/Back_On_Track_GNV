@@ -11,7 +11,7 @@ function App() {
     setMessage("");
 
     try {
-      const res = await fetch("http://localhost:5050/api/users/register", {
+      const res = await fetch("/api/users/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
@@ -27,6 +27,29 @@ function App() {
       setMessage("❌ Server error. Please try again later.");
     }
   };
+
+  // Events list / DB-driven UI
+  const [events, setEvents] = useState([]);
+  const [loadingEvents, setLoadingEvents] = useState(false);
+
+  const fetchEvents = async () => {
+    setLoadingEvents(true);
+    try {
+      const res = await fetch('/api/events');
+      const data = await res.json();
+      if (res.ok) setEvents(data);
+      else setMessage(`❌ Error loading events: ${data.message || res.status}`);
+    } catch (err) {
+      setMessage('❌ Unable to load events');
+    } finally {
+      setLoadingEvents(false);
+    }
+  };
+
+  // Load events on mount
+  useState(() => {
+    fetchEvents();
+  });
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
