@@ -52,12 +52,27 @@ function App() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+    <div
+      className="min-h-screen flex flex-col items-center justify-center p-4"
+      style={{
+        backgroundColor: "#1E293B", // Soft dark blue
+        color: "white", // White text
+        fontFamily: "'Poppins', sans-serif", // New font
+        textAlign: "center", // Center text
+      }}
+    >
       <h1 className="text-3xl font-bold mb-6">Back On Track GNV</h1>
       
       <form
         onSubmit={handleRegister}
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm"
+        style={{
+          backgroundColor: "#334155", // Slightly lighter dark blue for the form
+          color: "white",
+          display: "flex",
+          flexDirection: "column", // Stack input boxes
+          alignItems: "center", // Center content
+        }}
       >
         <h2 className="text-xl font-semibold mb-4">Register</h2>
         <input
@@ -65,21 +80,39 @@ function App() {
           placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="mb-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+          className="mb-3 shadow appearance-none border rounded py-2 px-3 leading-tight focus:outline-none"
+          style={{
+            backgroundColor: "#475569", // Input background
+            color: "white",
+            borderColor: "#64748B", // Border color
+            width: "15%", // Reduced width
+          }}
         />
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mb-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+          className="mb-3 shadow appearance-none border rounded py-2 px-3 leading-tight focus:outline-none"
+          style={{
+            backgroundColor: "#475569",
+            color: "white",
+            borderColor: "#64748B",
+            width: "15%", // Reduced width
+          }}
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+          className="mb-4 shadow appearance-none border rounded py-2 px-3 leading-tight focus:outline-none"
+          style={{
+            backgroundColor: "#475569",
+            color: "white",
+            borderColor: "#64748B",
+            width: "15%", // Reduced width
+          }}
         />
         <button
           type="submit"
@@ -90,7 +123,7 @@ function App() {
       </form>
 
       {message && (
-        <p className="text-center text-lg font-medium text-gray-800">{message}</p>
+        <p className="text-center text-lg font-medium">{message}</p>
       )}
     </div>
   );
