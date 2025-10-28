@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Login() {
+export default function Login({ setLoggedInUser }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -17,9 +17,13 @@ export default function Login() {
       });
 
       const data = await res.json();
+      console.log("Login response:", data); // 🧪 ADD THIS RIGHT HERE
+
       if (res.ok) {
         setMessage("✅ Login successful!");
-        // TODO: store token and redirect to dashboard
+        // Store user info in App state
+        setLoggedInUser(data); // assuming backend returns user info with role
+        localStorage.setItem("token", data.token); // optional
       } else {
         setMessage(`❌ ${data.message || "Login failed"}`);
       }
