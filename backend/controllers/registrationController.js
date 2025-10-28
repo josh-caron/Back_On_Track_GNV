@@ -46,3 +46,10 @@ export const getAttendees = async (req, res) => {
   const regs = await Registration.find({ event: eventId }).populate("user", "name email");
   res.json(regs);
 };
+
+// Get registrations for the authenticated user
+export const getMyRegistrations = async (req, res) => {
+  const userId = req.user._id;
+  const regs = await Registration.find({ user: userId }).populate("event");
+  res.json(regs);
+};
