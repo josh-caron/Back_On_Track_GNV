@@ -1,27 +1,31 @@
 import { useState } from "react";
 
-export default function Register() {
-  const [name, setName] = useState("");
+export default function Login({ setLoggedInUser }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleRegister = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setMessage("");
 
     try {
-      const res = await fetch("http://localhost:5050/api/users/register", {
+      const res = await fetch("http://localhost:5050/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json();
+      console.log("Login response:", data); // 🧪 ADD THIS RIGHT HERE
+
       if (res.ok) {
-        setMessage("✅ Registration successful!");
+        setMessage("✅ Login successful!");
+        // Store user info in App state
+        setLoggedInUser(data); // assuming backend returns user info with role
+        localStorage.setItem("token", data.token); // optional
       } else {
-        setMessage(`❌ ${data.message || "Registration failed"}`);
+        setMessage(`❌ ${data.message || "Login failed"}`);
       }
     } catch (err) {
       setMessage("❌ Server error. Please try again later.");
@@ -29,15 +33,7 @@ export default function Register() {
   };
 
   return (
-    <form className="auth-form" onSubmit={handleRegister}>
-      <input
-        type="text"
-        placeholder="Name"
-        className="auth-input"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
+    <form className="auth-form" onSubmit={handleLogin}>
       <input
         type="email"
         placeholder="Email"
@@ -55,7 +51,7 @@ export default function Register() {
         required
       />
       <button type="submit" className="primary-button">
-        Register
+        Login
       </button>
       {message && <p className="auth-message">{message}</p>}
     </form>
