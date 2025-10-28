@@ -10,15 +10,12 @@ export default function Login({ setLoggedInUser }) {
     setMessage("");
 
     try {
-      const res = await fetch("http://localhost:5050/api/users/login", {
+      const res = await fetch("/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-
       const data = await res.json();
-      console.log("Login response:", data); // 🧪 ADD THIS RIGHT HERE
-
       if (res.ok) {
         setMessage("✅ Login successful!");
         // Store user info in App state
