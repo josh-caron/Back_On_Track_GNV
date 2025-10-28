@@ -1,7 +1,10 @@
 /* Main container */
 .app-container {
   min-height: 100vh;
-  background-color: #0f172a; /* deep navy */
+  background: linear-gradient(135deg, #7b2ff7, #f107a3); /* purple-pink gradient */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -22,14 +25,16 @@
 
 /* Auth card */
 .auth-card {
-  background-color: #1e293b;
+  background-color: rgba(30, 41, 59, 0.75); /* slightly transparent dark overlay */
   padding: 2rem;
   border-radius: 12px;
   max-width: 400px;
   width: 100%;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px); /* soft blur effect */
   transition: transform 0.3s ease;
 }
+
 
 .auth-card:hover {
   transform: translateY(-4px);
