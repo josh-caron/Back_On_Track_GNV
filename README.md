@@ -31,12 +31,15 @@ Follow these steps to set up the project locally:
    git clone https://github.com/josh-caron/Back_On_Track_GNV.git
    cd Back_On_Track_GNV
 2. Install dependancies:
+    ```bash
     npm install
 3. Navigate to backend and run:
+    ```bash
     cd backend
     npm run dev
 4. Navigate to frontend and run:
+    ```bash
     cd frontend
     npm run dev
-5. Open browser and navogate to 
+5. Open browser and navigate to 
     http://localhost:5173/
