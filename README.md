@@ -1,10 +1,10 @@
 # Back On Track GNV
 
 ## Key Sections:
-Project Overview: Brief description of the project.
-Technologies Used: Lists the technologies used.
-Requirements: Lists the required applications.
-Installation: Step-by-step guide to set up the project locally.
+- Project Overview: Brief description of the project.
+- Technologies Used: Lists the technologies used.
+- Requirements: Lists the required applications.
+- Installation: Step-by-step guide to set up the project locally.
 
 ## Project Overview
 Back On Track Gainesville is a web application designed to administrators of Back on Track create and manage events and volunteers. It is also a tool for volunteers to view and sign up for events for Back on Track.
@@ -22,7 +22,7 @@ To run this project locally, ensure you have the following installed:
 - **MongoDB** (if using a local database)
 - A modern web browser
 
-## Installaion
+## Installation
 
 Follow these steps to set up the project locally:
 
