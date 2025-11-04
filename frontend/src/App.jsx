@@ -3,6 +3,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import EventsList from "./components/EventsList";
 import MyRegistrations from "./components/MyRegistrations";
+import MyHours from "./components/MyHours";
 import AdminDashboard from "./components/AdminDashboard";
 import "./index.css";
 
@@ -43,10 +44,13 @@ export default function App() {
           <div style={{ marginBottom: 12 }}>
             <button className={`switch-button ${tab === 'browse' ? 'active' : ''}`} onClick={() => setTab('browse')}>Browse Events</button>
             <button className={`switch-button ${tab === 'my' ? 'active' : ''}`} onClick={() => setTab('my')} style={{ marginLeft: 8 }}>My Registrations</button>
+            <button className={`switch-button ${tab === 'hours' ? 'active' : ''}`} onClick={() => setTab('hours')} style={{ marginLeft: 8 }}>My Hours</button>
           </div>
 
           <div>
-            {tab === 'browse' ? <EventsList /> : <MyRegistrations />}
+            {tab === 'browse' ? <EventsList /> : 
+             tab === 'my' ? <MyRegistrations /> : 
+             <MyHours />}
           </div>
         </div>
       </div>
@@ -70,7 +74,7 @@ export default function App() {
           </>
         ) : (
           <>
-            <Register />
+            <Register setLoggedInUser={setLoggedInUser} />
             <button
               className="switch-button"
               onClick={() => setView("login")}

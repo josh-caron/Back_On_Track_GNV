@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Register() {
+export default function Register({ setLoggedInUser }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,7 +11,7 @@ export default function Register() {
     setMessage("");
 
     try {
-      const res = await fetch("http://localhost:5050/api/users/register", {
+      const res = await fetch("/api/users/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
@@ -19,7 +19,12 @@ export default function Register() {
 
       const data = await res.json();
       if (res.ok) {
-        setMessage("✅ Registration successful!");
+        setMessage("✅ Registration successful! Redirecting to homepage...");
+        // Store user info and redirect to homepage after a brief delay
+        setTimeout(() => {
+          setLoggedInUser(data);
+          localStorage.setItem("token", data.token);
+        }, 1500);
       } else {
         setMessage(`❌ ${data.message || "Registration failed"}`);
       }

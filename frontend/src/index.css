@@ -106,3 +106,158 @@
   font-size: 0.9rem;
   margin-top: 0.5rem;
 }
+
+/* My Hours Component Styles */
+.my-hours-container {
+  color: white;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.subsection-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.hours-summary {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hours-stat {
+  background-color: rgba(30, 41, 59, 0.8);
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 120px;
+  backdrop-filter: blur(5px);
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #38bdf8;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
+.no-hours {
+  text-align: center;
+  padding: 2rem;
+  background-color: rgba(30, 41, 59, 0.5);
+  border-radius: 8px;
+  color: #cbd5e1;
+}
+
+.hours-list {
+  margin-top: 1rem;
+}
+
+.hours-section {
+  margin-bottom: 2rem;
+}
+
+.hours-section-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: #e2e8f0;
+}
+
+.hour-item {
+  background-color: rgba(30, 41, 59, 0.8);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-left: 4px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.hour-item:hover {
+  background-color: rgba(30, 41, 59, 0.9);
+  transform: translateX(4px);
+}
+
+.hour-item.approved {
+  border-left-color: #10b981;
+}
+
+.hour-item.pending {
+  border-left-color: #f59e0b;
+}
+
+.hour-item.active {
+  border-left-color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.hour-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.hour-event {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #e2e8f0;
+}
+
+.hour-time {
+  font-weight: 500;
+  color: #38bdf8;
+}
+
+.hour-details {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+  flex-wrap: wrap;
+}
+
+.hour-details div {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Responsive design for hours */
+@media (max-width: 768px) {
+  .hours-summary {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .hour-main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .hour-details {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+/* Active switch button style */
+.switch-button.active {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
