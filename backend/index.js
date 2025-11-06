@@ -6,6 +6,7 @@ import userRoutes from "./routes/userRoutes.js";
 import eventRoutes from "./routes/eventRoutes.js";
 import hoursRoutes from "./routes/hoursRoutes.js";
 import registrationRoutes from "./routes/registrationRoutes.js";
+import dashboardRoutes from "./routes/dashboardRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -19,6 +20,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/hours", hoursRoutes);
 app.use('/api/registrations', registrationRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 app.get("/", (req, res) => {
   res.send("✅ Backend is running!");

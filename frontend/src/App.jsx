@@ -20,12 +20,7 @@ export default function App() {
 
   // ✅ If user is admin, show admin dashboard and hide login card
   if (loggedInUser?.role === "admin") {
-    return (
-      <div className="app-container">
-        <h1 className="app-title">Back On Track GNV</h1>
-        <AdminDashboard onLogout={handleLogout} />
-      </div>
-    );
+    return <AdminDashboard onLogout={handleLogout} />;
   }
 
   // If a volunteer (authenticated non-admin) is logged in, show events list
