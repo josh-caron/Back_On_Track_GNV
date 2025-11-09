@@ -85,40 +85,114 @@ export default function EventsList() {
   };
 
   return (
-    <div style={{ flex: 1 }}>
-      <h2 className="text-xl font-semibold mb-4">Events</h2>
+    <div className="volunteer-content">
+      <div className="content-header">
+        <h2 className="content-title">Available Events</h2>
+        <p className="content-subtitle">Discover volunteer opportunities in your community</p>
+      </div>
+
       {loading ? (
-        <p>Loading events...</p>
+        <div className="loading-spinner">Loading events...</div>
       ) : events.length === 0 ? (
-        <p>No events found.</p>
+        <div className="empty-state">
+          <div className="empty-icon">📅</div>
+          <h3>No Events Available</h3>
+          <p>Check back soon for new volunteer opportunities!</p>
+        </div>
       ) : (
-        <ul className="space-y-3 text-left">
+        <div className="events-grid">
           {events.map((ev) => {
             const isRegistered = registeredSet.has(ev._id);
+            const eventDate = ev.date ? new Date(ev.date) : null;
+            const isPastEvent = eventDate && eventDate < new Date();
+            
             return (
-              <li key={ev._id} className="p-3 rounded" style={{ backgroundColor: "#0f172a" }}>
-                <div className="font-bold text-lg">{ev.name}</div>
-                {ev.date && (
-                  <div className="text-sm text-slate-300">{new Date(ev.date).toLocaleString()}</div>
-                )}
-                {ev.location && <div className="text-sm">Location: {ev.location}</div>}
-                {ev.description && <div className="text-sm">{ev.description}</div>}
-                {ev.capacity != null && <div className="text-xs mt-2">Capacity: {ev.capacity}</div>}
+              <div key={ev._id} className={`event-card ${isRegistered ? 'registered' : ''} ${isPastEvent ? 'past-event' : ''}`}>
+                <div className="event-header">
+                  <h3 className="event-title">{ev.name}</h3>
+                  {isRegistered && <span className="registered-badge">✅ Registered</span>}
+                </div>
 
-                <div className="mt-3">
-                  {isRegistered ? (
-                    <button className="primary-button" onClick={() => handleUnregister(ev._id)}>Unregister</button>
-                  ) : (
-                    <button className="primary-button" onClick={() => handleRegister(ev._id)}>Register</button>
+                <div className="event-details">
+                  {eventDate && (
+                    <div className="event-detail">
+                      <span className="detail-icon">📅</span>
+                      <span className="detail-text">
+                        {eventDate.toLocaleDateString('en-US', { 
+                          weekday: 'long', 
+                          year: 'numeric', 
+                          month: 'long', 
+                          day: 'numeric' 
+                        })}
+                      </span>
+                    </div>
+                  )}
+
+                  {eventDate && (
+                    <div className="event-detail">
+                      <span className="detail-icon">🕒</span>
+                      <span className="detail-text">
+                        {eventDate.toLocaleTimeString('en-US', { 
+                          hour: '2-digit', 
+                          minute: '2-digit' 
+                        })}
+                      </span>
+                    </div>
+                  )}
+
+                  {ev.location && (
+                    <div className="event-detail">
+                      <span className="detail-icon">📍</span>
+                      <span className="detail-text">{ev.location}</span>
+                    </div>
+                  )}
+
+                  {ev.capacity != null && (
+                    <div className="event-detail">
+                      <span className="detail-icon">👥</span>
+                      <span className="detail-text">Max {ev.capacity} volunteers</span>
+                    </div>
                   )}
                 </div>
-              </li>
+
+                {ev.description && (
+                  <div className="event-description">
+                    {ev.description}
+                  </div>
+                )}
+
+                <div className="event-actions">
+                  {isPastEvent ? (
+                    <button className="event-btn disabled" disabled>
+                      Event Ended
+                    </button>
+                  ) : isRegistered ? (
+                    <button 
+                      className="event-btn unregister" 
+                      onClick={() => handleUnregister(ev._id)}
+                    >
+                      Unregister
+                    </button>
+                  ) : (
+                    <button 
+                      className="event-btn register" 
+                      onClick={() => handleRegister(ev._id)}
+                    >
+                      Register Now
+                    </button>
+                  )}
+                </div>
+              </div>
             );
           })}
-        </ul>
+        </div>
       )}
 
-      {message && <p className="text-sm mt-3">{message}</p>}
+      {message && (
+        <div className={`message-toast ${message.includes('✅') ? 'success' : 'error'}`}>
+          {message}
+        </div>
+      )}
     </div>
   );
 }

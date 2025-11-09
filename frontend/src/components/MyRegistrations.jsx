@@ -74,30 +74,109 @@ export default function MyRegistrations() {
     } catch (err) { setMessage('Server error'); }
   };
 
-  if (loading) return <p>Loading your registrations...</p>;
-
-  if (regs.length === 0) return <p>You have no registrations yet.</p>;
-
   return (
-    <div>
-      <h3 className="text-lg font-semibold mb-3">My Registrations</h3>
-      <ul className="space-y-3 text-left">
-        {regs.map((r) => (
-          <li key={r._id} className="p-3 rounded" style={{ backgroundColor: '#0f172a' }}>
-            <div className="font-bold">{r.event?.name || 'Event'}</div>
-            {r.event?.date && <div className="text-sm">{new Date(r.event.date).toLocaleString()}</div>}
-            {r.event?.location && <div className="text-sm">Location: {r.event.location}</div>}
-            <div className="mt-2">
-              {hasOpenSession(r.event?._id) ? (
-                <button className="primary-button" onClick={() => handleCheckOut(r.event._id)}>Check out</button>
-              ) : (
-                <button className="primary-button" onClick={() => handleCheckIn(r.event._id)}>Check in</button>
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
-      {message && <p className="text-sm mt-3">{message}</p>}
+    <div className="volunteer-content">
+      <div className="content-header">
+        <h2 className="content-title">My Registrations</h2>
+        <p className="content-subtitle">Manage your registered volunteer events</p>
+      </div>
+
+      {loading ? (
+        <div className="loading-spinner">Loading your registrations...</div>
+      ) : regs.length === 0 ? (
+        <div className="empty-state">
+          <div className="empty-icon">📋</div>
+          <h3>No Registrations Yet</h3>
+          <p>Browse events to sign up for volunteer opportunities!</p>
+        </div>
+      ) : (
+        <div className="registrations-grid">
+          {regs.map((r) => {
+            const eventDate = r.event?.date ? new Date(r.event.date) : null;
+            const isCheckedIn = hasOpenSession(r.event?._id);
+            const isPastEvent = eventDate && eventDate < new Date();
+            
+            return (
+              <div key={r._id} className={`registration-card ${isCheckedIn ? 'checked-in' : ''}`}>
+                <div className="registration-header">
+                  <h3 className="registration-title">{r.event?.name || 'Event'}</h3>
+                  {isCheckedIn && <span className="status-badge active">🔴 Checked In</span>}
+                </div>
+
+                <div className="registration-details">
+                  {eventDate && (
+                    <div className="registration-detail">
+                      <span className="detail-icon">📅</span>
+                      <span className="detail-text">
+                        {eventDate.toLocaleDateString('en-US', { 
+                          weekday: 'long', 
+                          year: 'numeric', 
+                          month: 'long', 
+                          day: 'numeric' 
+                        })}
+                      </span>
+                    </div>
+                  )}
+
+                  {eventDate && (
+                    <div className="registration-detail">
+                      <span className="detail-icon">🕒</span>
+                      <span className="detail-text">
+                        {eventDate.toLocaleTimeString('en-US', { 
+                          hour: '2-digit', 
+                          minute: '2-digit' 
+                        })}
+                      </span>
+                    </div>
+                  )}
+
+                  {r.event?.location && (
+                    <div className="registration-detail">
+                      <span className="detail-icon">📍</span>
+                      <span className="detail-text">{r.event.location}</span>
+                    </div>
+                  )}
+
+                  <div className="registration-detail">
+                    <span className="detail-icon">✅</span>
+                    <span className="detail-text">
+                      Registered {new Date(r.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="registration-actions">
+                  {isPastEvent ? (
+                    <button className="registration-btn disabled" disabled>
+                      Event Completed
+                    </button>
+                  ) : isCheckedIn ? (
+                    <button 
+                      className="registration-btn checkout" 
+                      onClick={() => handleCheckOut(r.event._id)}
+                    >
+                      Check Out
+                    </button>
+                  ) : (
+                    <button 
+                      className="registration-btn checkin" 
+                      onClick={() => handleCheckIn(r.event._id)}
+                    >
+                      Check In
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {message && (
+        <div className={`message-toast ${message.includes('✅') || message.includes('Checked') ? 'success' : 'error'}`}>
+          {message}
+        </div>
+      )}
     </div>
   );
 }

@@ -23,30 +23,48 @@ export default function App() {
     return <AdminDashboard onLogout={handleLogout} />;
   }
 
-  // If a volunteer (authenticated non-admin) is logged in, show events list
+  // If a volunteer (authenticated non-admin) is logged in, show volunteer dashboard
   if (loggedInUser) {
     return (
-      <div className="app-container">
-        <h1 className="app-title">Back On Track GNV</h1>
-        <div className="auth-card" style={{ maxWidth: 1200 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-            <div>Welcome, <strong>{loggedInUser.name || loggedInUser.email}</strong></div>
-            <div>
-              <button className="switch-button" onClick={handleLogout}>Logout</button>
-            </div>
+      <div className="volunteer-dashboard">
+        {/* Header */}
+        <div className="dashboard-header">
+          <div className="dashboard-header-left">
+            <h1 className="dashboard-title">Volunteer Portal</h1>
+            <p className="dashboard-subtitle">Welcome back, {loggedInUser.name || loggedInUser.email}!</p>
           </div>
+          <div className="dashboard-header-right">
+            <button className="logout-button" onClick={handleLogout}>Logout</button>
+          </div>
+        </div>
 
-          <div style={{ marginBottom: 12 }}>
-            <button className={`switch-button ${tab === 'browse' ? 'active' : ''}`} onClick={() => setTab('browse')}>Browse Events</button>
-            <button className={`switch-button ${tab === 'my' ? 'active' : ''}`} onClick={() => setTab('my')} style={{ marginLeft: 8 }}>My Registrations</button>
-            <button className={`switch-button ${tab === 'hours' ? 'active' : ''}`} onClick={() => setTab('hours')} style={{ marginLeft: 8 }}>My Hours</button>
-          </div>
+        {/* Navigation Tabs */}
+        <div className="dashboard-nav">
+          <button 
+            className={`nav-tab ${tab === 'browse' ? 'active' : ''}`} 
+            onClick={() => setTab('browse')}
+          >
+            🎯 Browse Events
+          </button>
+          <button 
+            className={`nav-tab ${tab === 'my' ? 'active' : ''}`} 
+            onClick={() => setTab('my')}
+          >
+            📋 My Registrations
+          </button>
+          <button 
+            className={`nav-tab ${tab === 'hours' ? 'active' : ''}`} 
+            onClick={() => setTab('hours')}
+          >
+            ⏰ My Hours
+          </button>
+        </div>
 
-          <div>
-            {tab === 'browse' ? <EventsList /> : 
-             tab === 'my' ? <MyRegistrations /> : 
-             <MyHours />}
-          </div>
+        {/* Content */}
+        <div className="dashboard-content">
+          {tab === 'browse' ? <EventsList /> : 
+           tab === 'my' ? <MyRegistrations /> : 
+           <MyHours />}
         </div>
       </div>
     );
@@ -54,30 +72,51 @@ export default function App() {
 
   // 👇 Otherwise, keep normal login/register flow for unauthenticated users
   return (
-    <div className="app-container">
-      <h1 className="app-title">Back On Track GNV</h1>
-      <div className="auth-card">
-        {view === "login" ? (
-          <>
-            <Login setLoggedInUser={setLoggedInUser} />
-            <button
-              className="switch-button"
-              onClick={() => setView("register")}
-            >
-              Create an Account
-            </button>
-          </>
-        ) : (
-          <>
-            <Register setLoggedInUser={setLoggedInUser} />
-            <button
-              className="switch-button"
-              onClick={() => setView("login")}
-            >
-              Back to Login
-            </button>
-          </>
-        )}
+    <div className="modern-auth-container">
+      <div className="auth-background">
+        <div className="auth-background-shapes">
+          <div className="bg-shape shape-1"></div>
+          <div className="bg-shape shape-2"></div>
+          <div className="bg-shape shape-3"></div>
+        </div>
+      </div>
+      
+      <div className="auth-content">
+        <div className="auth-brand">
+          <div className="brand-logo">🌟</div>
+          <h1 className="brand-title">Back On Track GNV</h1>
+          <p className="brand-subtitle">Empowering our community through volunteer service</p>
+        </div>
+
+        <div className="auth-card-modern">
+          {view === "login" ? (
+            <>
+              <Login setLoggedInUser={setLoggedInUser} />
+              <div className="auth-switch">
+                <p className="switch-text">Don't have an account?</p>
+                <button
+                  className="switch-link"
+                  onClick={() => setView("register")}
+                >
+                  Create Account
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <Register setLoggedInUser={setLoggedInUser} />
+              <div className="auth-switch">
+                <p className="switch-text">Already have an account?</p>
+                <button
+                  className="switch-link"
+                  onClick={() => setView("login")}
+                >
+                  Sign In
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
