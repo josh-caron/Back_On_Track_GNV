@@ -4,6 +4,7 @@ import Register from "./components/Register";
 import EventsList from "./components/EventsList";
 import MyRegistrations from "./components/MyRegistrations";
 import MyHours from "./components/MyHours";
+import MyStats from "./components/MyStats";
 import AdminDashboard from "./components/AdminDashboard";
 import "./index.css";
 
@@ -18,7 +19,7 @@ export default function App() {
     setView("login");
   };
 
-  // ✅ If user is admin, show admin dashboard and hide login card
+  // If user is admin, show admin dashboard and hide login card
   if (loggedInUser?.role === "admin") {
     return <AdminDashboard onLogout={handleLogout} />;
   }
@@ -58,19 +59,26 @@ export default function App() {
           >
             ⏰ My Hours
           </button>
+          <button 
+            className={`nav-tab ${tab === 'stats' ? 'active' : ''}`} 
+            onClick={() => setTab('stats')}
+          >
+            📊 My Stats
+          </button>
         </div>
 
         {/* Content */}
         <div className="dashboard-content">
           {tab === 'browse' ? <EventsList /> : 
            tab === 'my' ? <MyRegistrations /> : 
-           <MyHours />}
+           tab === 'hours' ? <MyHours /> :
+           <MyStats />}
         </div>
       </div>
     );
   }
 
-  // 👇 Otherwise, keep normal login/register flow for unauthenticated users
+  // Otherwise, keep normal login/register flow for unauthenticated users
   return (
     <div className="modern-auth-container">
       <div className="auth-background">

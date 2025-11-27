@@ -1,3 +1,4 @@
+// AdminDashboard: Admin overview, hours approval, and event creation.
 import { useEffect, useState } from "react";
 
 export default function AdminDashboard({ onLogout }) {
@@ -204,29 +205,81 @@ export default function AdminDashboard({ onLogout }) {
                 </div>
 
                 <div className="chart-card">
-                  <h3 className="chart-title">Quick Actions</h3>
-                  <div className="quick-actions">
-                    <button 
-                      className="action-button approve-action"
-                      onClick={() => setTab('approve')}
-                    >
-                      <span className="action-icon">✅</span>
-                      <div>
-                        <div className="action-title">Approve Hours</div>
-                        <div className="action-subtitle">{stats.pendingHours || 0} pending</div>
+                  <h3 className="chart-title">🏆 Top Volunteers This Month</h3>
+                  <div style={{ padding: '1rem 0' }}>
+                    {stats.topVolunteersThisMonth && stats.topVolunteersThisMonth.length > 0 ? (
+                      <div className="space-y-3">
+                        {stats.topVolunteersThisMonth.map((volunteer, idx) => (
+                          <div 
+                            key={volunteer._id} 
+                            className="flex items-center justify-between p-3 rounded-lg"
+                            style={{ backgroundColor: 'rgba(15, 23, 42, 0.5)' }}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div 
+                                className="flex items-center justify-center"
+                                style={{
+                                  width: '32px',
+                                  height: '32px',
+                                  borderRadius: '50%',
+                                  backgroundColor: idx === 0 ? '#fbbf24' : idx === 1 ? '#94a3b8' : idx === 2 ? '#fb923c' : '#475569',
+                                  fontSize: '1.2rem'
+                                }}
+                              >
+                                {idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`}
+                              </div>
+                              <div>
+                                <div className="font-semibold" style={{ color: '#e2e8f0' }}>
+                                  {volunteer.name || volunteer.email}
+                                </div>
+                                <div className="text-xs" style={{ color: '#94a3b8' }}>
+                                  {volunteer.sessionCount} session{volunteer.sessionCount !== 1 ? 's' : ''}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="font-bold" style={{ color: '#10b981', fontSize: '1.1rem' }}>
+                              {Math.round(volunteer.totalHours * 10) / 10}h
+                            </div>
+                          </div>
+                        ))}
+                        {stats.topVolunteersThisMonth.length > 0 && (
+                          <div className="text-center pt-2" style={{ color: '#94a3b8', fontSize: '0.9rem' }}>
+                            🌟 Volunteer of the Month: <span style={{ color: '#fbbf24', fontWeight: 600 }}>{stats.topVolunteersThisMonth[0]?.name || stats.topVolunteersThisMonth[0]?.email}</span>
+                          </div>
+                        )}
                       </div>
-                    </button>
-                    <button 
-                      className="action-button create-action"
-                      onClick={() => setTab('create')}
-                    >
-                      <span className="action-icon">📅</span>
-                      <div>
-                        <div className="action-title">Create Event</div>
-                        <div className="action-subtitle">Add new volunteer opportunity</div>
+                    ) : (
+                      <div className="text-center" style={{ color: '#94a3b8', padding: '2rem' }}>
+                        No volunteer hours logged this month yet
                       </div>
-                    </button>
+                    )}
                   </div>
+                </div>
+              </div>
+
+              <div className="chart-card">
+                <h3 className="chart-title">Quick Actions</h3>
+                <div className="quick-actions">
+                  <button 
+                    className="action-button approve-action"
+                    onClick={() => setTab('approve')}
+                  >
+                    <span className="action-icon">✅</span>
+                    <div>
+                      <div className="action-title">Approve Hours</div>
+                      <div className="action-subtitle">{stats.pendingHours || 0} pending</div>
+                    </div>
+                  </button>
+                  <button 
+                    className="action-button create-action"
+                    onClick={() => setTab('create')}
+                  >
+                    <span className="action-icon">📅</span>
+                    <div>
+                      <div className="action-title">Create Event</div>
+                      <div className="action-subtitle">Add new volunteer opportunity</div>
+                    </div>
+                  </button>
                 </div>
               </div>
             </>

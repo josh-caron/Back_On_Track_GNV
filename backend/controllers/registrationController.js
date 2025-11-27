@@ -1,7 +1,7 @@
 import Registration from "../models/registrationModel.js";
 import Event from "../models/eventModel.js";
 
-// Register the authenticated user for an event (idempotent)
+// Register the authenticated user for an event
 export const registerForEvent = async (req, res) => {
   const eventId = req.params.id;
   const userId = req.user._id;
@@ -21,7 +21,7 @@ export const registerForEvent = async (req, res) => {
     const reg = await Registration.create({ user: userId, event: eventId });
     return res.status(201).json(reg);
   } catch (err) {
-    // Duplicate registration (E11000) - return existing registration (idempotent)
+    // Duplicate registration - return existing registration
     if (err.code === 11000) {
       const existing = await Registration.findOne({ user: userId, event: eventId });
       return res.status(200).json({ message: "Already registered", registration: existing });

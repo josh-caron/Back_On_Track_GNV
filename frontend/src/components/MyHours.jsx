@@ -1,3 +1,4 @@
+// MyHours: Volunteer hours history, totals, and active sessions.
 import { useEffect, useState } from "react";
 
 export default function MyHours() {

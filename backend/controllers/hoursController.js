@@ -16,7 +16,7 @@ export const getMyHours = async (req, res) => {
   res.json(myHours);
 };
 
-// Admin: get all hours (optionally filter by approved=false)
+// Admin: get all hours
 export const getAllHours = async (req, res) => {
   const { approved } = req.query;
   const filter = {};
@@ -62,4 +62,63 @@ export const checkOut = async (req, res) => {
   open.status = "closed";
   await open.save();
   res.json(open);
+};
+
+// Get volunteer statistics
+export const getMyStats = async (req, res) => {
+  try {
+    // gather data for statistics
+    const userId = req.user._id;
+    const myHours = await Hours.find({ user: userId, approved: true }).populate('event');
+    const totalHours = myHours.reduce((sum, h) => sum + (h.hoursWorked || 0), 0);
+    const uniqueEvents = new Set(myHours.map(h => h.event?._id?.toString()).filter(Boolean));
+    const eventsParticipated = uniqueEvents.size;
+    
+    // Calculate most active month/year
+    const monthCounts = {};
+    myHours.forEach(h => {
+      if (h.startTime) {
+        const date = new Date(h.startTime);
+        const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        monthCounts[monthKey] = (monthCounts[monthKey] || 0) + (h.hoursWorked || 0);
+      }
+    });
+    
+    let mostActiveMonth = null;
+    let mostActiveHours = 0;
+    for (const [month, hours] of Object.entries(monthCounts)) {
+      if (hours > mostActiveHours) {
+        mostActiveHours = hours;
+        mostActiveMonth = month;
+      }
+    }
+    
+    // Recent activity (last 30 days)
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const recentHours = myHours.filter(h => 
+      h.startTime && new Date(h.startTime) >= thirtyDaysAgo
+    ).reduce((sum, h) => sum + (h.hoursWorked || 0), 0);
+    
+    // Format monthly breakdown for graph (last 6 months)
+    const monthlyBreakdown = Object.entries(monthCounts)
+      .map(([month, hours]) => ({ month, hours: Math.round(hours * 100) / 100 }))
+      .sort((a, b) => a.month.localeCompare(b.month))
+      .slice(-6); // last 6 months
+    
+    res.json({
+      totalHours: Math.round(totalHours * 100) / 100,
+      eventsParticipated,
+      mostActiveMonth: mostActiveMonth ? {
+        month: mostActiveMonth,
+        hours: Math.round(mostActiveHours * 100) / 100
+      } : null,
+      recentHours: Math.round(recentHours * 100) / 100,
+      totalSessions: myHours.length,
+      monthlyBreakdown
+    });
+  } catch (error) {
+    console.error('Stats error:', error);
+    res.status(500).json({ message: 'Error calculating stats' });
+  }
 };

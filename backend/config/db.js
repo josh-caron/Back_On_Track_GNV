@@ -1,3 +1,5 @@
+// Connects to MongoDB using the MONGO_URI environment variable and stops the server if it fails.
+
 import mongoose from "mongoose";
 
 const connectDB = async () => {

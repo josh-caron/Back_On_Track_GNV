@@ -1,3 +1,4 @@
+// EventsList: Browse events with register/unregister actions.
 import { useEffect, useState } from "react";
 
 export default function EventsList() {

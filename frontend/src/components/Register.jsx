@@ -1,3 +1,4 @@
+// Register: Account creation form for new volunteers.
 import { useState } from "react";
 
 export default function Register({ setLoggedInUser }) {

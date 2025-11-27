@@ -1,3 +1,4 @@
+// Login: Sign-in form and authentication flow.
 import { useState } from "react";
 
 export default function Login({ setLoggedInUser }) {

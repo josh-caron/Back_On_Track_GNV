@@ -1,3 +1,5 @@
+// Middleware that verifies a JWT, attaches the authenticated user to the request, and restricts certain routes to admins.
+
 import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 

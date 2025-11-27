@@ -1,3 +1,4 @@
+// MyRegistrations: Manage registrations with event check-in/out.
 import { useEffect, useState } from "react";
 
 export default function MyRegistrations() {
