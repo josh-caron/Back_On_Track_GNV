@@ -40,6 +40,7 @@ export default function MyRegistrations() {
   }, []);
 
   const hasOpenSession = (eventId) => {
+    if (!eventId) return false;
     return hours.find((h) => h.event && h.event._id === eventId && h.status === 'open');
   };
 
@@ -93,6 +94,11 @@ export default function MyRegistrations() {
       ) : (
         <div className="registrations-grid">
           {regs.map((r) => {
+            // Skip registrations with missing event data
+            if (!r.event || !r.event._id) {
+              return null;
+            }
+            
             const eventDate = r.event?.date ? new Date(r.event.date) : null;
             const isCheckedIn = hasOpenSession(r.event?._id);
             const isPastEvent = eventDate && eventDate < new Date();

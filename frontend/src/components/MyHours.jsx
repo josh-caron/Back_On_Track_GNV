@@ -40,8 +40,8 @@ export default function MyHours() {
   }, []);
 
   // Calculate total hours and separate approved/pending
-  const approvedHours = hours.filter(h => h.approved && h.hoursWorked);
-  const pendingHours = hours.filter(h => !h.approved && h.hoursWorked);
+  const approvedHours = hours.filter(h => h.approved && h.hoursWorked != null);
+  const pendingHours = hours.filter(h => !h.approved && h.hoursWorked != null);
   const totalApprovedHours = approvedHours.reduce((sum, h) => sum + (h.hoursWorked || 0), 0);
   const totalPendingHours = pendingHours.reduce((sum, h) => sum + (h.hoursWorked || 0), 0);
 
