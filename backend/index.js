@@ -7,7 +7,7 @@ import eventRoutes from "./routes/eventRoutes.js";
 import hoursRoutes from "./routes/hoursRoutes.js";
 import registrationRoutes from "./routes/registrationRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
-
+import adminHoursRoutes from "./routes/adminHoursRoutes.js";
 dotenv.config();
 connectDB();
 
@@ -19,8 +19,9 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/hours", hoursRoutes);
-app.use('/api/registrations', registrationRoutes);
-app.use('/api/dashboard', dashboardRoutes);
+app.use("/api/registrations", registrationRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/admin", adminHoursRoutes);
 
 app.get("/", (req, res) => {
   res.send("✅ Backend is running!");
